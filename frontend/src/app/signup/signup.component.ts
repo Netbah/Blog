@@ -17,4 +17,12 @@ export class SignupComponent implements OnInit {
   loginWithGoogle() {
     this.auth.googleLogin();
   }
+
+  loginWithFacebook() {
+    this.auth.facebookLogin();
+  }
+
+  loginWithTwitter() {
+    this.auth.twitterLogin();
+  }
 }
