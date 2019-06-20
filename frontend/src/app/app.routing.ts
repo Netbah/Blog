@@ -8,10 +8,11 @@ import { ProfileComponent } from './profile/profile.component';
 import { SignupComponent } from './signup/signup.component';
 import { LandingComponent } from './landing/landing.component';
 import { NucleoiconsComponent } from './components/nucleoicons/nucleoicons.component';
+import { AuthGuard } from './core/auth/auth.guard';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'user-profile', component: ProfileComponent },
+  { path: 'user-profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'signup', component: SignupComponent },
   { path: 'landing', component: LandingComponent },
   { path: 'nucleoicons', component: NucleoiconsComponent },

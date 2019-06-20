@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { AuthService } from 'app/core/auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,14 +10,18 @@ import { Location, LocationStrategy, PathLocationStrategy } from '@angular/commo
 export class NavbarComponent implements OnInit {
   private toggleButton: any;
   private sidebarVisible: boolean;
+  user: IUser;
 
-  constructor(public location: Location, private element: ElementRef) {
+  constructor(public location: Location, private element: ElementRef, private auth: AuthService) {
     this.sidebarVisible = false;
   }
 
   ngOnInit() {
     const navbar: HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
+    this.auth.user.subscribe(user => {
+      this.user = user;
+    });
   }
   sidebarOpen() {
     const toggleButton = this.toggleButton;
@@ -56,9 +61,35 @@ export class NavbarComponent implements OnInit {
       return false;
     }
   }
-  isDocumentation() {
+  showSignUp() {
     const titlee = this.location.prepareExternalUrl(this.location.path());
-    if (titlee === '/documentation') {
+    if (titlee === '/signup') {
+      return false;
+    } else if (this.user) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  showUserProfile() {
+    const titlee = this.location.prepareExternalUrl(this.location.path());
+    if (titlee === '/user-profile') {
+      return false;
+    }
+    if (!this.user) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  signOut() {
+    this.auth.signOut();
+  }
+
+  showSignOut() {
+    const titlee = this.location.prepareExternalUrl(this.location.path());
+    if (this.user) {
       return true;
     } else {
       return false;

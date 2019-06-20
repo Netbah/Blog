@@ -14,6 +14,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 
 import { HomeModule } from './home/home.module';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -30,9 +31,10 @@ import { HomeModule } from './home/home.module';
     FormsModule,
     RouterModule,
     AppRoutingModule,
-    HomeModule
+    HomeModule,
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
