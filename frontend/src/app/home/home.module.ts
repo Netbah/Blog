@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
 
 import { ComponentsModule } from '../components/components.module';
+import { NavbarComponent } from 'app/shared/navbar/navbar.component';
 
 @NgModule({
   imports: [CommonModule, BrowserModule, FormsModule, RouterModule, ComponentsModule],

@@ -12,7 +12,11 @@ export class SignupComponent implements OnInit {
   focus1;
   constructor(private auth: AuthService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.auth.user.subscribe(() => {
+      console.log('sdf');
+    });
+  }
 
   loginWithGoogle() {
     this.auth.googleLogin();

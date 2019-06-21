@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
 
 import { AppComponent } from './app.component';
-import { SignupComponent } from './signup/signup.component';
 import { LandingComponent } from './landing/landing.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
@@ -15,15 +14,15 @@ import { FooterComponent } from './shared/footer/footer.component';
 
 import { HomeModule } from './home/home.module';
 import { CoreModule } from './core/core.module';
+import { LoginModule } from './login/login.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SignupComponent,
     LandingComponent,
     ProfileComponent,
-    NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +31,8 @@ import { CoreModule } from './core/core.module';
     RouterModule,
     AppRoutingModule,
     HomeModule,
-    CoreModule
+    CoreModule,
+    LoginModule
   ],
   providers: [],
   bootstrap: [AppComponent]

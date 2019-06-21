@@ -5,15 +5,18 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
-import { SignupComponent } from './signup/signup.component';
+
 import { LandingComponent } from './landing/landing.component';
 import { NucleoiconsComponent } from './components/nucleoicons/nucleoicons.component';
 import { AuthGuard } from './core/auth/auth.guard';
+import { LoginComponent } from './login/login/login.component';
+import { LoginRoutes } from './login/login-routing.module';
+import { SignupComponent } from './login/signup/signup.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'user-profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: 'signup', component: SignupComponent },
+  { path: 'login', component: LoginComponent, children: LoginRoutes },
   { path: 'landing', component: LandingComponent },
   { path: 'nucleoicons', component: NucleoiconsComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
