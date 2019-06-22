@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth/auth.service';
+import { EmailPasswordCredentials } from 'app/core/model/EmailPasswordCredentials';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -10,23 +12,33 @@ export class SignupComponent implements OnInit {
   test: Date = new Date();
   focus;
   focus1;
-  constructor(private auth: AuthService) {}
+  errorMessage: any;
+  constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit() {
-    this.auth.user.subscribe(() => {
-      console.log('sdf');
-    });
-  }
+  ngOnInit() {}
 
   loginWithGoogle() {
-    this.auth.googleLogin();
+    this.authService.googleLogin();
   }
 
   loginWithFacebook() {
-    this.auth.facebookLogin();
+    this.authService.facebookLogin();
   }
 
   loginWithTwitter() {
-    this.auth.twitterLogin();
+    this.authService.twitterLogin();
+  }
+
+  async login(form) {
+    const { password, email } = form.value;
+    const creds = new EmailPasswordCredentials();
+    creds.email = email;
+    creds.password = password;
+    try {
+      await this.authService.emailLogin(creds);
+      this.router.navigate(['/']);
+    } catch (error) {
+      this.errorMessage = error;
+    }
   }
 }

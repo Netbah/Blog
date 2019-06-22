@@ -1,0 +1,18 @@
+.card-register {
+  background: darkgrey;
+
+  .title {
+    color: white;
+    text-align: center;
+  }
+
+  .errorMessage {
+    color: black;
+    font-size: large;
+    text-align: center;
+  }
+
+  .not-valid {
+    color: red;
+  }
+}

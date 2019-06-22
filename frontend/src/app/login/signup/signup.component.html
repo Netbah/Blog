@@ -1,5 +1,6 @@
 <div class="card card-register">
   <h3 class="title">Welcome</h3>
+  <h4 class="errorMessage">{{ errorMessage }}</h4>
   <div class="social-line text-center">
     <a (click)="loginWithFacebook()" class="btn btn-neutral btn-facebook btn-just-icon">
       <i class="fa fa-facebook-square"></i>
@@ -11,7 +12,7 @@
       <i class="fa fa-twitter"></i>
     </a>
   </div>
-  <form class="register-form">
+  <form #form="ngForm" (ngSubmit)="login(form)">
     <label>Email</label>
     <div
       class="input-group form-group-no-border"
@@ -24,11 +25,15 @@
       </div>
 
       <input
-        type="text"
+        name="email"
+        type="email"
+        email="true"
+        ngModel
         class="form-control"
         placeholder="Email"
         (focus)="focus = true"
         (blur)="focus = false"
+        required
       />
     </div>
 
@@ -43,13 +48,19 @@
         </span>
       </div>
       <input
-        type="text"
+        type="password"
+        name="password"
         class="form-control"
         placeholder="Password"
+        ngModel
         (focus)="focus1 = true"
         (blur)="focus1 = false"
+        required
       />
     </div>
+    <button [disabled]="!form.valid" class="btn btn-danger btn-block btn-round" submit>
+      Sign Up
+    </button>
     <button class="btn btn-danger btn-block btn-round" [routerLink]="['register']">
       Register
     </button>

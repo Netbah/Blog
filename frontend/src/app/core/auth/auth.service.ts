@@ -7,6 +7,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { Router } from '@angular/router';
 import { auth } from 'firebase/app';
 import { environment } from 'environments/environment';
+import { EmailPasswordCredentials } from '../model/EmailPasswordCredentials';
 
 @Injectable({
   providedIn: 'root'
@@ -41,19 +42,55 @@ export class AuthService {
     );
   }
 
-  googleLogin() {
+  public googleLogin() {
     const provider = new auth.GoogleAuthProvider();
     return this.oAuthLogin(provider);
   }
 
-  facebookLogin() {
+  public facebookLogin() {
     const provider = new auth.FacebookAuthProvider();
     return this.oAuthLogin(provider);
   }
 
-  twitterLogin() {
+  public twitterLogin() {
     const provider = new auth.TwitterAuthProvider();
     return this.oAuthLogin(provider);
+  }
+
+  public registerNewUser(credentials: EmailPasswordCredentials) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let credential: firebase.auth.UserCredential;
+        credential = await this.afAuth.auth.createUserWithEmailAndPassword(
+          credentials.email,
+          credentials.password
+        );
+        this.updateUserData(credential.user);
+        resolve();
+      } catch (error) {
+        reject(error.message);
+      }
+    });
+  }
+
+  public async emailLogin(credentials: EmailPasswordCredentials) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let credential: firebase.auth.UserCredential;
+        credential = await this.afAuth.auth.signInWithEmailAndPassword(
+          credentials.email,
+          credentials.password
+        );
+        this.updateUserData(credential.user);
+        resolve();
+      } catch (error) {
+        reject(error.message);
+      }
+    });
+  }
+
+  public forgotPassword(email: string) {
+    this.afAuth.auth.sendPasswordResetEmail(email);
   }
 
   private oAuthLogin(provider) {
@@ -76,7 +113,7 @@ export class AuthService {
     return userRef.set(data, { merge: true });
   }
 
-  signOut() {
+  public signOut() {
     this.afAuth.auth.signOut().then(() => {
       this.router.navigate(['/']);
     });

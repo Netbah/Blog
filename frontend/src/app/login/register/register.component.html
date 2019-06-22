@@ -1,6 +1,30 @@
 <div class="card card-register">
   <h3 class="title">Registration</h3>
-  <form class="register-form">
+  <h4 class="errorMessage">{{ errorMessage }}</h4>
+  <form #form="ngForm" (ngSubmit)="register(form)" class="register-form">
+    <label>User Name</label>
+    <div
+      class="input-group form-group-no-border"
+      [ngClass]="{ 'input-group-focus': focus === true }"
+    >
+      <div class="input-group-prepend">
+        <span class="input-group-text">
+          <i class="nc-icon nc-circle-10"></i>
+        </span>
+      </div>
+
+      <input
+        name="username"
+        type="text"
+        ngModel
+        class="form-control"
+        placeholder="User Name"
+        (focus)="focus = true"
+        (blur)="focus = false"
+        required
+      />
+    </div>
+
     <label>Email</label>
     <div
       class="input-group form-group-no-border"
@@ -13,11 +37,15 @@
       </div>
 
       <input
-        type="text"
+        name="email"
+        type="email"
+        email="true"
+        ngModel
         class="form-control"
         placeholder="Email"
         (focus)="focus = true"
         (blur)="focus = false"
+        required
       />
     </div>
 
@@ -32,13 +60,42 @@
         </span>
       </div>
       <input
-        type="text"
+        type="password"
+        name="password"
         class="form-control"
         placeholder="Password"
+        ngModel
         (focus)="focus1 = true"
         (blur)="focus1 = false"
+        required
       />
     </div>
+
+    <label>Repeat Password</label>
+    <div
+      class="input-group form-group-no-border"
+      [ngClass]="{ 'input-group-focus': focus1 === true }"
+    >
+      <div class="input-group-prepend">
+        <span class="input-group-text">
+          <i class="nc-icon nc-key-25"></i>
+        </span>
+      </div>
+      <input
+        name="repeatPassword"
+        type="password"
+        class="form-control"
+        placeholder="Password"
+        ngModel
+        (focus)="focus1 = true"
+        (blur)="focus1 = false"
+        required
+      />
+    </div>
+    <button [disabled]="!form.valid" class="btn btn-danger btn-block btn-round" submit>
+      register
+    </button>
+
     <button class="btn btn-danger btn-block btn-round" [routerLink]="['../']">
       Sign Up
     </button>
