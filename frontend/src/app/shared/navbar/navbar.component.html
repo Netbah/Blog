@@ -19,7 +19,7 @@
     </div>
     <div class="navbar-collapse" id="navbarToggler">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a
             class="nav-link"
             rel="tooltip"
@@ -57,7 +57,7 @@
             <i class="fa fa-instagram"></i>
             <p class="d-lg-none">Instagram</p>
           </a>
-        </li>
+        </li> -->
         <li class="nav-item" *ngIf="showSignUp()">
           <a [routerLink]="['/login']" class="nav-link">
             <i class="nc-icon nc-circle-10"></i>Sign Up</a
@@ -70,6 +70,11 @@
         <li class="nav-item" *ngIf="showUserProfile()">
           <a [routerLink]="['/user-profile']" class="nav-link"
             ><i class="nc-icon nc-layout-11"></i>Profile</a
+          >
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/posts']" class="nav-link"
+            ><i class="nc-icon nc-layout-11"></i>Posts</a
           >
         </li>
         <li class="nav-item" *ngIf="showSignOut()">

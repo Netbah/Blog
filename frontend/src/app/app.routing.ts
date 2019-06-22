@@ -11,11 +11,13 @@ import { NucleoiconsComponent } from './components/nucleoicons/nucleoicons.compo
 import { AuthGuard } from './core/auth/auth.guard';
 import { LoginComponent } from './login/login/login.component';
 import { LoginRoutes } from './login/login-routing.module';
-import { SignupComponent } from './login/signup/signup.component';
+import { PostsRoutes } from './posts/posts-routing.module';
+import { PostsComponent } from './posts/posts/posts.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'user-profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'posts', component: PostsComponent, children: PostsRoutes },
   { path: 'login', component: LoginComponent, children: LoginRoutes },
   { path: 'landing', component: LandingComponent },
   { path: 'nucleoicons', component: NucleoiconsComponent },
