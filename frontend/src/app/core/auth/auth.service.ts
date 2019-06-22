@@ -8,12 +8,18 @@ import { Router } from '@angular/router';
 import { auth } from 'firebase/app';
 import { environment } from 'environments/environment';
 import { EmailPasswordCredentials } from '../model/EmailPasswordCredentials';
+import { User } from '../model/User';
+import { canRead, canEdit, canDelete } from './RolesAuthorization';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  user: Observable<IUser>;
+  public user: Observable<User>;
+
+  public canRead: (user: User) => boolean = canRead;
+  public canEdit: (user: User) => boolean = canEdit;
+  public canDelete: (user: User) => boolean = canDelete;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -26,6 +32,11 @@ export class AuthService {
         uid: 'sdfsdfsdf',
         email: 'user.email@gmsdf.df',
         displayName: 'Mock User',
+        roles: {
+          subscriber: true,
+          editor: true,
+          admin: true
+        },
         photoURL:
           'https://lh3.googleusercontent.com/-4DNikZAjt5o/AAAAAAAAAAI/AAAAAAAAbsQ/vitlnLqj1rI/photo.jpg'
       });
@@ -34,7 +45,7 @@ export class AuthService {
     this.user = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
-          return this.afs.doc<IUser>(`users/${user.uid}`).valueChanges();
+          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
         } else {
           return of(null);
         }
@@ -103,11 +114,14 @@ export class AuthService {
     // Sets user data to firestore on login
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
 
-    const data: IUser = {
+    const data: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
-      photoURL: user.photoURL
+      photoURL: user.photoURL,
+      roles: {
+        subscriber: true
+      }
     };
 
     return userRef.set(data, { merge: true });
