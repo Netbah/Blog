@@ -2,17 +2,22 @@ import { User } from '../model/User';
 
 export function canRead(user: User): boolean {
   const allowed = ['admin', 'editor', 'subscriber'];
-  return this.checkAuthorization(user, allowed);
+  return checkAuthorization(user, allowed);
 }
 
 export function canEdit(user: User): boolean {
   const allowed = ['admin', 'editor'];
-  return this.checkAuthorization(user, allowed);
+  return checkAuthorization(user, allowed);
 }
 
 export function canDelete(user: User): boolean {
   const allowed = ['admin'];
-  return this.checkAuthorization(user, allowed);
+  return checkAuthorization(user, allowed);
+}
+
+export function canAdd(user: User): boolean {
+  const allowed = ['admin'];
+  return checkAuthorization(user, allowed);
 }
 
 // determines if user has matching role

@@ -9,17 +9,19 @@ import { auth } from 'firebase/app';
 import { environment } from 'environments/environment';
 import { EmailPasswordCredentials } from '../model/EmailPasswordCredentials';
 import { User } from '../model/User';
-import { canRead, canEdit, canDelete } from './RolesAuthorization';
+import { canRead, canEdit, canDelete, canAdd } from './RolesAuthorization';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   public user: Observable<User>;
+  public currentUser: User;
 
-  public canRead: (user: User) => boolean = canRead;
-  public canEdit: (user: User) => boolean = canEdit;
-  public canDelete: (user: User) => boolean = canDelete;
+  public canRead: (user: User) => boolean = () => canRead(this.currentUser);
+  public canEdit: (user: User) => boolean = () => canEdit(this.currentUser);
+  public canAdd: (user: User) => boolean = () => canAdd(this.currentUser);
+  public canDelete: (user: User) => boolean = () => canDelete(this.currentUser);
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -41,6 +43,8 @@ export class AuthService {
           'https://lh3.googleusercontent.com/-4DNikZAjt5o/AAAAAAAAAAI/AAAAAAAAbsQ/vitlnLqj1rI/photo.jpg'
       });
     }
+
+    this.user.subscribe((u: User) => (this.currentUser = u));
     //// Get auth data, then get firestore user document || null
     this.user = this.afAuth.authState.pipe(
       switchMap(user => {
