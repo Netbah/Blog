@@ -15,14 +15,14 @@ import { PostsRoutes } from './posts/posts-routing.module';
 import { PostsComponent } from './posts/posts/posts.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
+  { path: '', component: HomeComponent },
   { path: 'user-profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'posts', component: PostsComponent, children: PostsRoutes },
   { path: 'login', component: LoginComponent, children: LoginRoutes },
   { path: 'landing', component: LandingComponent },
   { path: 'nucleoicons', component: NucleoiconsComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: '**', redirectTo: 'home', pathMatch: 'full' }
+  { path: '', redirectTo: '', pathMatch: 'full' },
+  { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
 @NgModule({
