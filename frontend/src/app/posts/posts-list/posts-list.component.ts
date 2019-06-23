@@ -8,7 +8,11 @@ import { AuthService } from 'app/core/auth/auth.service';
 })
 export class PostsListComponent implements OnInit {
   items: { timeToDead: string; description: string }[];
-  constructor(public auth: AuthService) {}
+
+  page: number;
+  constructor(public auth: AuthService) {
+    this.page = 1;
+  }
 
   ngOnInit() {
     this.items = [

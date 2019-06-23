@@ -18,10 +18,10 @@ export class AuthService {
   public user: Observable<User>;
   public currentUser: User;
 
-  public canRead: (user: User) => boolean = () => canRead(this.currentUser);
-  public canEdit: (user: User) => boolean = () => canEdit(this.currentUser);
-  public canAdd: (user: User) => boolean = () => canAdd(this.currentUser);
-  public canDelete: (user: User) => boolean = () => canDelete(this.currentUser);
+  public canRead: () => boolean = () => canRead(this.currentUser);
+  public canEdit: () => boolean = () => canEdit(this.currentUser);
+  public canAdd: () => boolean = () => canAdd(this.currentUser);
+  public canDelete: () => boolean = () => canDelete(this.currentUser);
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -44,7 +44,6 @@ export class AuthService {
       });
     }
 
-    this.user.subscribe((u: User) => (this.currentUser = u));
     //// Get auth data, then get firestore user document || null
     this.user = this.afAuth.authState.pipe(
       switchMap(user => {
@@ -55,6 +54,7 @@ export class AuthService {
         }
       })
     );
+    this.user.subscribe((u: User) => (this.currentUser = u));
   }
 
   public googleLogin() {
