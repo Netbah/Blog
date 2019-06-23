@@ -17,7 +17,7 @@
     <div class="container">
       <div class="row">
         <div *ngFor="let item of items; index as i" class="col-md-4">
-          <div class="card mb-4 box-shadow pointer">
+          <a class="card mb-4 box-shadow" [routerLink]="['/posts', item.id]" routerLinkActive="router-link-active">
             <img class="card-img-top" src="./assets/img/articles/note.jpeg" alt="Card image cap" />
             <div class="card-body">
               <p class="card-text">
@@ -35,16 +35,12 @@
                 <small class="text-muted">{{ item.timeToDead }}</small>
               </div>
             </div>
-          </div>
+          </a>
         </div>
       </div>
 
       <div class="row align-items-center justify-content-center">
-        <ngb-pagination
-          [collectionSize]="70"
-          [(page)]="page"
-          aria-label="Default pagination"
-        ></ngb-pagination>
+        <ngb-pagination [collectionSize]="70" [(page)]="page" aria-label="Default pagination"></ngb-pagination>
       </div>
     </div>
   </div>
