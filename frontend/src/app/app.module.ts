@@ -16,6 +16,20 @@ import { PostsModule } from './posts/posts.module';
 import { CoreModule } from './core/core.module';
 import { LoginModule } from './login/login.module';
 
+import { HighlightModule } from 'ngx-highlightjs';
+
+import xml from 'highlight.js/lib/languages/xml';
+import scss from 'highlight.js/lib/languages/scss';
+import typescript from 'highlight.js/lib/languages/typescript';
+
+export function hljsLanguages() {
+  return [
+    { name: 'typescript', func: typescript },
+    { name: 'scss', func: scss },
+    { name: 'xml', func: xml }
+  ];
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +47,10 @@ import { LoginModule } from './login/login.module';
     HomeModule,
     CoreModule,
     LoginModule,
-    PostsModule
+    PostsModule,
+    HighlightModule.forRoot({
+      languages: hljsLanguages
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

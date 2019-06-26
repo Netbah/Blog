@@ -29,6 +29,17 @@ export class AuthService {
     private router: Router,
     private _location: Location
   ) {
+    //// Get auth data, then get firestore user document || null
+    this.user = this.afAuth.authState.pipe(
+      switchMap(user => {
+        if (user) {
+          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+        } else {
+          return of(null);
+        }
+      })
+    );
+
     if (!environment.production) {
       this.user = of({
         uid: 'sdfsdfsdf',
@@ -44,17 +55,10 @@ export class AuthService {
       });
     }
 
-    //// Get auth data, then get firestore user document || null
-    this.user = this.afAuth.authState.pipe(
-      switchMap(user => {
-        if (user) {
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
-        } else {
-          return of(null);
-        }
-      })
-    );
-    this.user.subscribe((u: User) => (this.currentUser = u));
+    this.user.subscribe((u: User) => {
+      this.currentUser = u;
+      console.log(u);
+    });
   }
 
   public googleLogin() {
