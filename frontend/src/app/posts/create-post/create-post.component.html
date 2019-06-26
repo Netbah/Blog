@@ -5,3 +5,26 @@
     <br />
   </div>
 </div>
+
+<div class="container">
+  <div class="main">
+    <div class="section">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Title">
+          </div>
+        </div>
+
+
+        <div class="col-md-12">
+          <div class="form-group">
+            <ckeditor [(ngModel)]="mycontent" #myckeditor="ngModel" name="myckeditor" required [config]="ckeConfig"
+              debounce="500" (change)="onChange($event)">
+            </ckeditor>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
