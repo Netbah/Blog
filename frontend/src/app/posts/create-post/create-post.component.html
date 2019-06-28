@@ -9,22 +9,28 @@
 <div class="container">
   <div class="main">
     <div class="section">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Title">
+      <form #form="ngForm" (ngSubmit)="create()">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <input name="title" [(ngModel)]="post.title" type="text" class="form-control" placeholder="Title">
+            </div>
+          </div>
+
+
+          <div class="col-md-12">
+            <div class="form-group">
+              <ckeditor name="title" [(ngModel)]="post.content" #myckeditor="ngModel" name="myckeditor" required
+                [config]="ckeConfig" debounce="500" (change)="onChange($event)">
+              </ckeditor>
+            </div>
           </div>
         </div>
 
 
-        <div class="col-md-12">
-          <div class="form-group">
-            <ckeditor [(ngModel)]="mycontent" #myckeditor="ngModel" name="myckeditor" required [config]="ckeConfig"
-              debounce="500" (change)="onChange($event)">
-            </ckeditor>
-          </div>
-        </div>
-      </div>
+        <button submit class="btn btn-outline-default btn-sm">Create
+        </button>
+      </form>
     </div>
   </div>
 </div>
