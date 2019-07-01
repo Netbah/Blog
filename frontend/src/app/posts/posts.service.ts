@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Post } from './model/post';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class PostsService {
   postsRef: AngularFirestoreCollection<Post[]>;
-  posts: any;
+  posts: Observable<Post[]>;
 
   constructor(private afs: AngularFirestore) {
     this.postsRef = this.afs.collection('posts');
@@ -17,23 +17,38 @@ export class PostsService {
   }
 
   getAll(): Observable<Post[]> {
-    return this.postsRef.valueChanges().pipe(map((p: any) => p as Post[]));
+    return this.postsRef.snapshotChanges().pipe(
+      map(actions =>
+        actions.map(a => {
+          const data = a.payload.doc.data() as any;
+          const id = a.payload.doc.id;
+          return { id, ...data } as Post;
+        })
+      )
+    );
   }
-
-  // getAll(): Observable<Post[]> {
-  //   return this.postsRef.get().pipe(
-  //     map((p: any) => {
-  //       return p.docs.map(doc => doc.data());
-  //     })
-  //   );
-  // }
 
   // Return a single observable item
   getById(key: string): Observable<Post> {
     return this.postsRef
       .doc<Post>(key)
       .get()
-      .pipe(map((res: any) => res.data as Post));
+      .pipe(
+        map((res: any) => {
+          return res.data as Post;
+        })
+      );
+  }
+
+  getByUrl(url: string): Observable<Post> {
+    return this.afs
+      .collection('posts', ref => ref.where('url', '==', url))
+      .valueChanges()
+      .pipe(
+        map((res: any) => {
+          return res.pop() as Post;
+        })
+      );
   }
 
   add(item: Post): Promise<void> {

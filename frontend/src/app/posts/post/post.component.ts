@@ -1,12 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HighlightResult } from 'ngx-highlightjs';
+import { Router, ParamMap, ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
+import { PostsService } from '../posts.service';
+import { Subscription, Observable } from 'rxjs';
+import { Post } from '../model/post';
 
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss']
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit, OnDestroy {
   response: HighlightResult;
 
   code = `
@@ -39,10 +44,26 @@ export class PostComponent implements OnInit {
     flex-direction: column;
     align-items: center;
   }`;
+  post$: Observable<Post>;
+  post: Post;
+  subs: Subscription;
 
-  constructor() {}
+  constructor(private route: ActivatedRoute, private postsService: PostsService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.post$ = this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        return this.postsService.getByUrl(params.get('url'));
+      })
+    );
+    this.subs = this.post$.subscribe(post => {
+      this.post = post;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
 
   onHighlight(e) {
     this.response = {
